@@ -32,6 +32,5 @@ This repository contains the code and data for the ARR-submitted paper _“JELV:
 The `evaluation` directory is modified based on [CLEME](https://github.com/THUKElab/CLEME). And more details will be completed after ARR review.
 
 > [!NOTE]
->
-> Please download our *distilled DeBERTa JELV2.0* from [Google Drive](https://drive.google.com/drive/folders/1Gx4K8LNFvzlC9WVIPjUVYGe6CTDRUGHe?usp=sharing) and use it to replace `JudgeModel` directory.
+> We will upload the *DeBERTa* checkpoint and more detailed implementations after ARR review.
 
