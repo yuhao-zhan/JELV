@@ -76,7 +76,7 @@ This directory stores the whole workflow of JELV-based $\mathrm{F(x)}$.
   ```bash
   usage: JELV_based_Fx.py --ref REF.m2 --hyp HYP.m2 [--alpha α] [--gamma γ] [--level system|sentence]
   
-  Compute combined JELV‐based F(x): A + γ·B
+  Compute combined JELV‐based F(x): (1 - γ)·A + γ·B
   
   options:
     -h, --help            show this help message and exit
