@@ -12,7 +12,7 @@ from FluencyScorer.fluency import evaluate_fluency
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Compute combined JELV‐based F(x): A + γ·B",
+        description="Compute combined JELV‐based F(x): (1 - γ)·A + γ·B",
         formatter_class=argparse.RawTextHelpFormatter,
         usage="%(prog)s --ref REF.m2 --hyp HYP.m2 [--alpha α] [--gamma γ] [--level system|sentence]"
     )

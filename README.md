@@ -39,9 +39,9 @@ This directory stores the whole workflow of JELV-based $\mathrm{F(x)}$.
 * **Base metric**:  [CLEME](https://github.com/THUKElab/CLEME). We choose it becuase our edit-level metric is based on F-score and CLEME is a leading F-metric based metric.
 * **Edit-level metric**: combines  JELV-based reclassification, FP decoupling and fluency score integration.
   * **JELV_based_cleme**
-    Performs JELV inference on-the-fly: any edit initially flagged as a false positive (FP) during evaluation is sent to JELV for validity checking. This integrates directly into the full JELV-based $\mathrm{F(x)}$ workflow but incurs substantial evaluation overhead.
+    performs JELV inference on-the-fly: any edit initially flagged as a false positive (FP) during evaluation is sent to JELV for validity checking. This integrates directly into the full JELV-based $\mathrm{F(x)}$ workflow but incurs substantial evaluation overhead.
   * **JELV_based_cleme_cache**
-    Uses a precomputed cache of all FP-classified edits (from SEEDA’s meta-evaluation) along with their JELV-validated labels. During evaluation, cached edits bypass inference and immediately return their stored validity—dramatically reducing runtime without compromising accuracy. We employ this "cache" version into our final evaluation workflow.
+    uses a precomputed cache of all FP-classified edits (from SEEDA’s meta-evaluation) along with their JELV-validated labels. During evaluation, cached edits bypass inference and immediately return their stored validity—dramatically reducing runtime without compromising accuracy. We employ this "cache" version into our final evaluation workflow.
 * **Sentence-level metric**: `FluencyScorer`
 * **Final Metric**: JELV-based $\mathrm{F(x)}$, combining edit-level and sentence-level metrics.
 
