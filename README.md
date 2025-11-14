@@ -6,7 +6,7 @@ This repository contains the code and data for the AAAI26 (Oral) paper _“JELV:
 
 JELV introduces an edit-level validity judge and an integrated evaluation metric **F(x)** that combines edit-level reasoning, fluency assessment, and a unified scoring formulation. The metric supports both system-level and sentence-level evaluation and is compatible with existing M2-format GEC datasets.
 
-<img src="/Users/zhanyuxiao/Library/Application Support/typora-user-images/image-20251114113611884.png" alt="image-20251114113611884" style="zoom:50%;" />
+<img src="assets/first_image.png" alt="image-20251114113611884" style="zoom:50%;" />
 
 ## 📦 Repository Overview
 
@@ -66,7 +66,7 @@ The `FluencyScorer/` module computes fluency scores using our sentence-level mod
 
 JELV-based $\mathrm{F(x)}$, combining edit-level and sentence-level metrics.
 
-<img src="/Users/zhanyuxiao/Library/Application Support/typora-user-images/image-20251114113703416.png" alt="image-20251114113703416" style="zoom:50%;" />
+<img src="assets/evaluation_workflow.png" alt="image-20251114113703416" style="zoom:50%;" />
 
 ---
 
