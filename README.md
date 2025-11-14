@@ -1,8 +1,6 @@
 # JELV: A Judge of Edit-Level Validity
 
-> Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction
-
-This repository contains the code and data for the AAAI26 (Oral) paper _“JELV: A Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction.”_
+This repository contains the code and data for the AAAI26 (**Oral**) paper _“JELV: A Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction.”_
 
 JELV introduces an edit-level validity judge and an integrated evaluation metric **F(x)** that combines edit-level reasoning, fluency assessment, and a unified scoring formulation. The metric supports both system-level and sentence-level evaluation and is compatible with existing M2-format GEC datasets.
 
