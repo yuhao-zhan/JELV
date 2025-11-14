@@ -2,9 +2,13 @@
 
 > Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction
 
-This repository contains the code and data for the under-review paper _“JELV: A Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction.”_
+This repository contains the code and data for the AAAI26 (Oral) paper _“JELV: A Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction.”_
 
-## 📁 Repository Structure
+JELV introduces an edit-level validity judge and an integrated evaluation metric **F(x)** that combines edit-level reasoning, fluency assessment, and a unified scoring formulation. The metric supports both system-level and sentence-level evaluation and is compatible with existing M2-format GEC datasets.
+
+<img src="/Users/zhanyuxiao/Library/Application Support/typora-user-images/image-20251114113611884.png" alt="image-20251114113611884" style="zoom:50%;" />
+
+## 📦 Repository Overview
 
 ```text
 .
@@ -21,58 +25,98 @@ This repository contains the code and data for the under-review paper _“JELV: 
     └── scripts
 ```
 
----
+### 🎯 Data
 
-## 🚀 Features
+We release the two datasets we curated and proposed in our work.
 
-### Data
+* **Benchmark (PEVData)**
+   A human-annotated pairwise edit-level validity dataset containing **1,459 valid** and **1,338 invalid** edit pairs. This dataset serves as a high-quality benchmark for edit-level validity judgment.
+* **Train Set**
+  A JELV-filtered, LLM-expanded version of BEA-19 dev sets in **M2 format**, included to retrain the top-performing GEC models in the paper.
 
-We release the two datasets we curated and proposed in our paper.
+### 🧠 Evaluation Workflow: JELV-based F(x)
 
-* **Benchmark**: Human-annotated Pair-wise Edit-Level Validity datase PEVData with 1,459 valid and 1,338 invalid sentence pairs.  
-* **Train**: LLM-expanded and JELV-filtered BEA-19's training and development sets in `m2` format, used for re-training top GEC systems in our paper.
+The `evaluation/` directory includes the full implementation of the **F(x)** metric:
 
-### Evaluation
+#### **1. Base metric**
 
-This directory stores the whole workflow of JELV-based $\mathrm{F(x)}$.
+ [CLEME](https://github.com/THUKElab/CLEME). We choose it becuase our edit-level metric is based on F-score and CLEME is a leading F-metric based metric.
 
-* **Base metric**:  [CLEME](https://github.com/THUKElab/CLEME). We choose it becuase our edit-level metric is based on F-score and CLEME is a leading F-metric based metric.
-* **Edit-level metric**: combines  JELV-based reclassification, FP decoupling and fluency score integration.
-  * **JELV_based_cleme**
-    performs JELV inference on-the-fly: any edit initially flagged as a false positive (FP) during evaluation is sent to JELV for validity checking. This integrates directly into the full JELV-based $\mathrm{F(x)}$ workflow but incurs substantial evaluation overhead.
-  * **JELV_based_cleme_cache**
-    uses a precomputed cache of all FP-classified edits (from SEEDA’s meta-evaluation) along with their JELV-validated labels. During evaluation, cached edits bypass inference and immediately return their stored validity—dramatically reducing runtime without compromising accuracy. We employ this "cache" version into our final evaluation workflow.
-* **Sentence-level metric**: `FluencyScorer`
-* **Final Metric**: JELV-based $\mathrm{F(x)}$, combining edit-level and sentence-level metrics.
+#### **2. Edit-level metric**
+
+ Our enhanced edit-level metric integrates two components:
+
+* **JELV-based reclassification**
+   False-positive (FP) edits discovered during evaluation are routed to JELV for validity judgment.
+* **FP decoupling**
+  Separates genuine FP errors into overcorrection and over-correction according to whether the edit span in the source sentence is already correct.
+
+##### Implementations
+
+* **JELV_based_cleme**
+  performs JELV inference on-the-fly: any edit initially flagged as a false positive (FP) during evaluation is sent to JELV for validity checking. This integrates directly into the full JELV-based $\mathrm{F(x)}$ workflow but incurs substantial evaluation overhead.
+* **JELV_based_cleme_cache**
+  uses a precomputed cache of all FP-classified edits along with their JELV-validated labels. During evaluation, cached edits bypass inference and immediately return their stored validity—dramatically reducing runtime without compromising accuracy. We employ this "cache" version into our final evaluation workflow.
+
+#### **3. Sentence-level metric**
+
+The `FluencyScorer/` module computes fluency scores using our sentence-level modeling approach.
+
+#### **4. Final Metric**
+
+JELV-based $\mathrm{F(x)}$, combining edit-level and sentence-level metrics.
+
+<img src="/Users/zhanyuxiao/Library/Application Support/typora-user-images/image-20251114113703416.png" alt="image-20251114113703416" style="zoom:50%;" />
 
 ---
 
 ## ⚒️ How to Use Our Evaluation Metric
 
-* `cd evaluation`
+### ⚙️ Installation & Setup
 
-* Requirements
+```
+cd evaluation
+pip install -r requirements.txt
+```
 
-  ```bash
-  pip install -r requirements.txt
-  ```
+### 🔍 Selecting a JELV Model
 
-* Quick Start
+#### **JELV 1.0 (LLM-as-Judges Pipeline)**
 
-  ```bash
-  python scripts/JELV_based_Fx.py --ref demo/ref.m2 --hyp demo/hyp.m2 --alpha 0.5 --gamma 0.5 --level system
-  ```
-  
-  You can configure the hyperparameters according to the optimal settings detailed in Appendix 5.
+- Full prompts are released in **Appendix G** of the paper.
+- Provides the **highest judgment accuracy**.
+- Suitable when dataset size is moderate.
+- Cost: ~**$0.0007 per judgment** using DeepSeek-V3 API.
+
+#### **JELV 2.0 (Fine-tuned DeBERTa Checkpoint)**
+
+Download the released checkpoints on [google drive](https://drive.google.com/drive/folders/1Gx4K8LNFvzlC9WVIPjUVYGe6CTDRUGHe?usp=sharing). Place them under:
+
+```
+evaluation/JudgeModel
+```
+
+**Recommendation:**
+
+- Use **JELV 1.0** for highest accuracy.
+- Use **JELV 2.0** for very large-scale evaluation where efficiency matters.
+
+### 🚀 Quick Start
+
+```bash
+python scripts/JELV_based_Fx.py --ref demo/ref.m2 --hyp demo/hyp.m2 --alpha 0.5 --gamma 0.5 --level system
+```
+
+You can configure the hyperparameters according to the optimal settings detailed in Appendix E.
 
 * Guidelines
 
   ```bash
   python scripts/JELV_based_Fx.py --help
   ```
-  
+
   This command will output:
-  
+
   ```bash
   usage: JELV_based_Fx.py --ref REF.m2 --hyp HYP.m2 [--alpha α] [--gamma γ] [--level system|sentence]
   
@@ -90,4 +134,21 @@ This directory stores the whole workflow of JELV-based $\mathrm{F(x)}$.
                             sentence → one combined score per sentence
   ```
 
-> This is an initial github repo. We will further release our model (JELV2.0) checkpoint after review.
+## 🤝 Community & Contribution
+
+We welcome contributions from the research and open-source community, including:
+
+* More advanced training techques to enhance the prediction accuracy of JELV 2.0
+* Extensions of JELV to error-correction tasks of other languages
+* Improvements to sentence-level modeling
+* More performance gains to retraining on top GEC systems
+
+Feel free to open an issue or submit a pull request!
+
+## 📄 Citation
+
+If you use JELV, F(x), or the datasets in this repository, please cite our AAAI 2026 paper:
+
+```
+(TBD — will fill in upon camera-ready release)
+```
