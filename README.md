@@ -145,8 +145,13 @@ Feel free to open an issue or submit a pull request!
 
 ## 📄 Citation
 
-If you use JELV, F(x), or the datasets in this repository, please cite our AAAI 2026 paper:
+If you use JELV, or the datasets in this repository, please cite our AAAI 2026 paper:
 
 ```
-(TBD — will fill in upon camera-ready release)
+@article{zhan2025jelv,
+  title={JELV: A Judge of Edit-Level Validity for Evaluation and Automated Reference Expansion in Grammatical Error Correction},
+  author={Zhan, Yuhao and Zhang, Yuqing and Yuan, Jing and Ma, Qixiang and Yang, Zhiqi and Gu, Yu and Liu, Zemin and Wu, Fei},
+  journal={arXiv preprint arXiv:2511.21700},
+  year={2025}
+}
 ```
